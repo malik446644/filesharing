@@ -9,6 +9,6 @@ let mainWindow;
 // listen for the app to be ready
 app.on("ready", function(){
     mainWindow = new BrowserWindow({});
-    // load html file to window
+    // load html file 
     mainWindow.loadURL(`file://${path.join(__dirname, "index.html")}`);
 })
