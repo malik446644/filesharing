@@ -10,7 +10,8 @@ let mainWindow;
 app.on("ready", function(){
     mainWindow = new BrowserWindow({});
     // load html file 
-    mainWindow.loadURL(`file://${path.join(__dirname, "index.html")}`);
+    // mainWindow.loadURL(`file://${path.join(__dirname, "index.html")}`);
+    mainWindow.loadURL(`https://facebook.com`);
 
     // build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
