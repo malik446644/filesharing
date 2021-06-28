@@ -7,7 +7,7 @@
     "start": "electron ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Malik Najjar",
   "license": "ISC",
   "dependencies": {
     "electron": "^13.1.4"
