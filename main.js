@@ -26,7 +26,7 @@ if(process.env.NODE_ENV !== 'production'){
         {
           role: 'reload'
         },
-        {
+        { 
           label: 'Toggle DevTools',
           accelerator:process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
           click(item, focusedWindow){
