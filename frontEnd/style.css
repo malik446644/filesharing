@@ -18,8 +18,24 @@ body{
     margin-bottom: 5px;
 }
 .container{
-    padding: 15px;
+    padding: 0 15px;
     border: 2px solid rgb(66, 66, 66);
     border-radius: 10px;
     margin-bottom: 15px;
+}
+.device{
+    padding: 15px 0;
+    border-bottom: 1px solid black;
+}
+.device:last-child{
+    border: none;
+}
+.containerinnerTitle{
+    margin: 5px 0;
+}
+.noBorderLine{
+    border: none;
+}
+.bold{
+    font-weight: bold;
 }
