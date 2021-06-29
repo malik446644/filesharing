@@ -14,6 +14,10 @@ app.on("ready", function(){
     mainWindow = new BrowserWindow({});
     mainWindow.loadFile("frontEnd/index.html");
 
+    mainWindow.on('closed', function(){
+        app.quit();
+    });
+
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     Menu.setApplicationMenu(mainMenu)
 })
