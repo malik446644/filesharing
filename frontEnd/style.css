@@ -29,7 +29,7 @@ body{
     margin-bottom: 15px;
 }
 .device{
-    padding: 15px 0;
+    padding: 5px 0;
     border-bottom: 1px solid black;
 }
 .device:last-child{
