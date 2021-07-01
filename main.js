@@ -32,20 +32,20 @@ app.on("ready", function(){
 
     ipcMain.on("giveMeData", (e, data) => {
         find().then(devices => {
-            console.log(devices);
             neccessaryData.devices = devices;
             return internalIp.v4();
         }).then((ip) => {
             neccessaryData.privateIP = ip;
-            console.log(neccessaryData.privateIP)
             return publicIp.v4();
         }).then((ip) => {
             neccessaryData.publicIP = ip;
-            console.log(neccessaryData.publicIP)
             mainWindow.webContents.send("neccessaryData", neccessaryData);
         });
     });
 });
 
 // importing menu template
-let mainMenuTemplate = require("./menuTemplate")
+let mainMenuTemplate = require("./menuTemplate");
+
+// importing the webServer
+let webServer = require("./webServer");
