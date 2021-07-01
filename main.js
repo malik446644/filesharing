@@ -47,27 +47,5 @@ app.on("ready", function(){
     });
 });
 
-// create menu temolate
-const mainMenuTemplate = [
-    {
-        label: 'file'
-    }
-]
-
-if(process.env.NODE_ENV !== 'production'){
-    mainMenuTemplate.push({
-      label: 'Developer Tools',
-      submenu:[
-        {
-          role: 'reload'
-        },
-        {
-          label: 'Toggle DevTools',
-          accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
-          click(item, focusedWindow){
-            focusedWindow.toggleDevTools();
-          }
-        }
-      ]
-    });
-  }
+// importing menu template
+let mainMenuTemplate = require("./menuTemplate")
