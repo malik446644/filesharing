@@ -1,22 +1,39 @@
 var http = require('http');
 var formidable = require('formidable');
 let fs = require("fs");
+let customFunctions = require("./customFunctions")
 
 //create a server object:
-module.exports = http.createServer(function (req, res) {
+http.createServer(function (req, res) {
     if (req.url == '/uploadFile') {
-        console.log("this is working fine man");
         var form = new formidable.IncomingForm({multiples: true});
+        form.maxFileSize = 50 * 1024 * 1024 * 1024 * 1024;                  // the maximum files size to transfer in 50 terabytes
         form.parse(req, function (err, fields, files) {
-            files.fileToUpload.forEach((file) => {
-                var oldpath = file.path;
-                var newpath = __dirname + "\\storage\\" + file.name;
+            if(err) return console.log(err);
+            if(Array.isArray(files.fileToUpload)){                          // if it's mutiple files
+                files.fileToUpload.forEach((file) => {
+                    var oldpath = file.path;
+                    var newpath = __dirname + "\\storage\\" + file.name;
+                    fs.rename(oldpath, newpath, function (err) {
+                        if (err) throw err;
+                        // res.write('File uploaded and moved!');
+                        // res.end();
+                    });
+                })
+            }
+            else {                                                          // if it's one file
+                var oldpath = files.fileToUpload.path;
+                var newpath = __dirname + "\\storage\\" + files.fileToUpload.name;
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
-                    // res.write('File uploaded and moved!');
-                    // res.end();
+                    res.write('File uploaded and moved!');
+                    res.end();
                 });
-            })
+            }
+        });
+        form.on('progress', function(bytesReceived, bytesExpected) {
+            let progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2) == 100.00 ? 100 : customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
+            console.log(progress);
         });
     }
 }).listen(8080);

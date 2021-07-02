@@ -32,6 +32,7 @@ app.on("ready", function(){
 
     ipcMain.on("giveMeData", (e, data) => {
         find().then(devices => {
+            devices.push({ name: '?', ip: 'localhost', mac: '00:00:00:00:00:00' })
             neccessaryData.devices = devices;
             return internalIp.v4();
         }).then((ip) => {

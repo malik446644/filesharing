@@ -18,8 +18,14 @@ ipcRenderer.on("neccessaryData", (e, data) => {
     let devicesHTML = "";
     data.devices.forEach((device) => {
         devicesHTML += `<div class="device">
-            <div class="containerinnerTitle"><span class="bold">private ip address: </span>${device.ip}</div>
-            <div class="containerinnerTitle"><span class="bold">private mac: </span>${device.mac}</div>
+            <div>
+                <div class="containerinnerTitle"><span class="bold">private ip address: </span>${device.ip}</div>
+                <div class="containerinnerTitle"><span class="bold">private mac: </span>${device.mac}</div>
+            </div>
+            <form style="display: none;" class="theForm" action="http://${device.ip}:8080/uploadFile" method="post" enctype="multipart/form-data">
+                <input type="file" name="fileToUpload" class="fileToUpload" multiple>
+            </form>
+            <img style="cursor: pointer;" src="https://cdn.iconscout.com/icon/free/png-512/send-forward-arrow-right-direction-import-30559.png" height="35" width="35"></img>
         </div>`;
     })
     devicesContainer.innerHTML = devicesHTML;
