@@ -5,7 +5,16 @@ let customFunctions = require("./customFunctions")
 
 //create a server object:
 http.createServer(function (req, res) {
-    if (req.url == '/uploadFile') {
+    if (req.url == '/canISendTheseFiles') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString(); // convert Buffer to string
+        });
+        req.on('end', () => {
+            console.log(body);
+        });
+    }
+    else if (req.url == '/uploadFile') {
         var form = new formidable.IncomingForm({multiples: true});
         form.maxFileSize = 50 * 1024 * 1024 * 1024 * 1024;                  // the maximum files size to transfer in 50 terabytes
         form.parse(req, function (err, fields, files) {
@@ -26,8 +35,8 @@ http.createServer(function (req, res) {
                 var newpath = __dirname + "\\storage\\" + files.fileToUpload.name;
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
-                    res.write('File uploaded and moved!');
-                    res.end();
+                    // res.write('File uploaded and moved!');
+                    // res.end();
                 });
             }
         });
