@@ -4,7 +4,7 @@ const find = require('local-devices');
 const internalIp = require('internal-ip');
 const publicIp = require('public-ip');
 
-const {app, BrowserWindow, Menu, ipcMain} = electron;
+const {app} = electron;
 
 // Enable live reload for Electron too 
 require('electron-reload')(__dirname, {
@@ -12,41 +12,12 @@ require('electron-reload')(__dirname, {
 });
 
 let mainWindow;
-let neccessaryData = {};
 
 app.on("ready", function(){
-    mainWindow = new BrowserWindow({
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-        }
-    });
-    mainWindow.loadFile("frontEnd/index.html");
-
-    mainWindow.on('closed', function(){
-        app.quit();
-    });
-
-    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-    Menu.setApplicationMenu(mainMenu);
-
-    ipcMain.on("giveMeData", (e, data) => {
-        find().then(devices => {
-            devices.push({ name: '?', ip: 'localhost', mac: '00:00:00:00:00:00' })
-            neccessaryData.devices = devices;
-            return internalIp.v4();
-        }).then((ip) => {
-            neccessaryData.privateIP = ip;
-            return publicIp.v4();
-        }).then((ip) => {
-            neccessaryData.publicIP = ip;
-            mainWindow.webContents.send("neccessaryData", neccessaryData);
-        });
-    });
+    let mainWindow = require("./mainWindow")
+    // importing the webServer
+    let webServer = require("./webServer");
 });
 
-// importing menu template
-let mainMenuTemplate = require("./menuTemplate");
 
-// importing the webServer
-let webServer = require("./webServer");
+module.exports = app

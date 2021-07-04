@@ -2,6 +2,7 @@ var http = require('http');
 var formidable = require('formidable');
 let fs = require("fs");
 let customFunctions = require("./customFunctions")
+let mainWindow = require("./mainWindow")
 
 //create a server object:
 http.createServer(function (req, res) {
@@ -12,6 +13,7 @@ http.createServer(function (req, res) {
         });
         req.on('end', () => {
             console.log(body);
+            mainWindow.webContents.send("request", "im just testing man .. dont worry");
         });
     }
     else if (req.url == '/uploadFile') {

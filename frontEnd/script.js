@@ -17,6 +17,11 @@ let sendImages;
 // this is sending the data only when the front end is able to read data
 ipcRenderer.send("giveMeData", null);
 
+// events from electron
+ipcRenderer.on("request", (e, data) => {
+    console.log(data)
+})
+
 ipcRenderer.on("neccessaryData", (e, data) => {
     currentDevicePrivateAddress.innerHTML = data.privateIP;
     currentDevicePublicAddress.innerHTML = data.publicIP;
