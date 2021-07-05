@@ -13,7 +13,7 @@ http.createServer(function (req, res) {
         });
         req.on('end', () => {
             console.log(body);
-            mainWindow.webContents.send("request", "im just testing man .. dont worry");
+            mainWindow.webContents.send("request", "this message is a request from a device to send files to you");
         });
     }
     else if (req.url == '/uploadFile') {
