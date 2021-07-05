@@ -1,4 +1,6 @@
-require("./second")("wowowoowowo this is realy working man")
+import test from './second.js'
+
+test("wowowwowowow this is working man")
 
 const electron = require('electron');
 const {ipcRenderer} = electron;

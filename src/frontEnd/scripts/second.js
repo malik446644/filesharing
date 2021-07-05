@@ -1,5 +1,3 @@
-function test(message){
+export default function test(message){
     alert("this is a message from the owner if this app: " + message)
 }
-
-module.exports = test;
