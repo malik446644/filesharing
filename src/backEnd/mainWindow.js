@@ -7,7 +7,7 @@ const {BrowserWindow, Menu, ipcMain} = electron;
 // importing menu template
 let mainMenuTemplate = require("./menuTemplate");
 
-let app = require("./main")
+let app = require("../../main")
 let neccessaryData = {};
 
 mainWindow = new BrowserWindow({
@@ -16,7 +16,7 @@ mainWindow = new BrowserWindow({
         contextIsolation: false,
     }
 });
-mainWindow.loadFile("frontEnd/index.html");
+mainWindow.loadFile("src/frontEnd/index.html");
 
 mainWindow.on('closed', function(){
     app.quit();

@@ -14,9 +14,9 @@ require('electron-reload')(__dirname, {
 let mainWindow;
 
 app.on("ready", function(){
-    let mainWindow = require("./mainWindow")
+    let mainWindow = require("./src/backEnd/mainWindow")
     // importing the webServer
-    let webServer = require("./webServer");
+    let webServer = require("./src/backEnd/webServer");
 });
 
 
