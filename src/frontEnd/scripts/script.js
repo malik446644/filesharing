@@ -1,3 +1,5 @@
+require("./second")("wowowoowowo this is realy working man")
+
 const electron = require('electron');
 const {ipcRenderer} = electron;
 
