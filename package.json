@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron main"
+    "start": "electron main",
+    "build": "webpack --config webpack.config.js"
   },
   "keywords": [],
   "author": "Malik Najjar",
@@ -16,5 +17,8 @@
     "internal-ip": "^6.2.0",
     "local-devices": "^3.1.0",
     "public-ip": "^4.0.4"
+  },
+  "devDependencies": {
+    "webpack": "^5.42.0"
   }
 }
