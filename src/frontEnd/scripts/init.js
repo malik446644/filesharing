@@ -9,6 +9,10 @@ export default function init(){
     // selecting local devices list container
     let devicesContainer = document.querySelectorAll(".container")[1];
 
+    //selecting request prompts
+    let requestPromptBG = document.querySelector(".requestPromptBG");
+    let filesInformation = document.querySelector(".filesInformation");
+
     // initilizing these DOM elements to use it gloabally
     let forms;
     let inputs;
@@ -21,6 +25,8 @@ export default function init(){
     // events from electron
     ipcRenderer.on("request", (e, data) => {
         console.log(data)
+        filesInformation.innerHTML = data;
+        requestPromptBG.style.display = "flex";
     })
 
     ipcRenderer.on("neccessaryData", (e, data) => {
