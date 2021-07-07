@@ -24,8 +24,12 @@ export default function init(){
 
     // events from electron
     ipcRenderer.on("request", (e, data) => {
-        console.log(data)
-        filesInformation.innerHTML = data;
+        data = JSON.parse(data);
+        let html = "";
+        data.forEach((item) => {
+            html += `<div>name: ${item.name}, size: ${item.size}</div>`
+        })
+        filesInformation.innerHTML = html;
         requestPromptBG.style.display = "flex";
     })
 
@@ -62,27 +66,27 @@ export default function init(){
         // adding eventListeners for the inputs
         inputs.forEach((input, i) => {
             input.addEventListener("change", () => {
-                let files = Array.from(input.files);
-                let array = [];
-                files.forEach((file) => {
-                    array.push({
-                        name: file.name,
-                        size: file.size
-                    });
-                });
-                fetch(`http://${input.dataset.deviceip}:8080/canISendTheseFiles`, {
-                    method: 'POST',
-                    headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(array)
-                }).then((r) => {
-                    console.log(r.body)
-                }).catch((err) => {
-                    console.log(err)
-                });
-                // forms[i].submit();
+                // let files = Array.from(input.files);
+                // let array = [];
+                // files.forEach((file) => {
+                //     array.push({
+                //         name: file.name,
+                //         size: file.size
+                //     });
+                // });
+                // fetch(`http://${input.dataset.deviceip}:8080/canISendTheseFiles`, {
+                //     method: 'POST',
+                //     headers: {
+                //     'Accept': 'application/json',
+                //     'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(array)
+                // }).then((r) => {
+                //     console.log(r.body)
+                // }).catch((err) => {
+                //     console.log(err)
+                // });
+                forms[i].submit();
             });
         });
     });

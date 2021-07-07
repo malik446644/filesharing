@@ -3,6 +3,7 @@ var formidable = require('formidable');
 let fs = require("fs");
 let customFunctions = require("./customFunctions")
 let mainWindow = require("./mainWindow")
+let path = require("path")
 
 //create a server object:
 http.createServer(function (req, res) {
@@ -12,33 +13,30 @@ http.createServer(function (req, res) {
             body += chunk.toString(); // convert Buffer to string
         });
         req.on('end', () => {
-            body = JSON.parse(body)
             mainWindow.webContents.send("request", body);
         });
     }
     else if (req.url == '/uploadFile') {
-        var form = new formidable.IncomingForm({multiples: true});
+        var form = new formidable.IncomingForm({
+            multiples: true,
+        });
         form.maxFileSize = 50 * 1024 * 1024 * 1024 * 1024;                  // the maximum files size to transfer in 50 terabytes
         form.parse(req, function (err, fields, files) {
             if(err) return console.log(err);
             if(Array.isArray(files.fileToUpload)){                          // if it's mutiple files
                 files.fileToUpload.forEach((file) => {
                     var oldpath = file.path;
-                    var newpath = __dirname + "\\storage\\" + file.name;
+                    var newpath = path.join(path.resolve("storage"), file.name);
                     fs.rename(oldpath, newpath, function (err) {
                         if (err) throw err;
-                        // res.write('File uploaded and moved!');
-                        // res.end();
                     });
                 })
             }
             else {                                                          // if it's one file
                 var oldpath = files.fileToUpload.path;
-                var newpath = __dirname + "\\storage\\" + files.fileToUpload.name;
+                var newpath = path.join(path.resolve("storage"), files.fileToUpload.name);
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
-                    // res.write('File uploaded and moved!');
-                    // res.end();
                 });
             }
         });
