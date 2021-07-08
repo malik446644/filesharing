@@ -85,17 +85,21 @@ body{
 
 .requestPromptBG .requestBody .answerPart{
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
 }
 
 .requestPromptBG .requestBody .answerPart > div{
     display: flex;
     justify-content: space-between;
-    margin: 20px;
-    padding: 10px 15px;
+    margin: 15px 7.5px;
+    padding: 10px 20px;
     border: 2px solid black;
     border-radius: 10px;
     cursor: pointer;
+}
+
+.requestPromptBG .requestBody .answerPart > div:last-child{
+    margin-right: 0;
 }
 
 .requestPromptBG .requestBody .answerPart > div:hover{
