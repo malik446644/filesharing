@@ -24,7 +24,7 @@
     </div>
     <div class="requestPromptBG">
         <div class="requestBody">
-            <div class="question">do you want to accept these files</div>
+            <div class="question"><span class="senderip"></span> want to send these files</div>
             <div class="filesInformation">files information that will be recieved</div>
             <div class="answerPart">
                 <div>yes</div>
@@ -32,5 +32,8 @@
             </div>
         </div>
     </div>
+    <form class="theForm" action="null" method="post" enctype="multipart/form-data">
+        <input type="file" name="fileToUpload" class="fileToUpload" data-deviceip="null" multiple>
+    </form>
 </body>
 </html>

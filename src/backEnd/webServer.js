@@ -17,7 +17,7 @@ http.createServer(function (req, res) {
         });
     }
     else if (req.url == '/uploadFile') {
-        var form = new formidable.IncomingForm({
+        let form = new formidable.IncomingForm({
             multiples: true,
         });
         form.maxFileSize = 50 * 1024 * 1024 * 1024 * 1024;                  // the maximum files size to transfer in 50 terabytes
@@ -25,16 +25,16 @@ http.createServer(function (req, res) {
             if(err) return console.log(err);
             if(Array.isArray(files.fileToUpload)){                          // if it's mutiple files
                 files.fileToUpload.forEach((file) => {
-                    var oldpath = file.path;
-                    var newpath = path.join(path.resolve("storage"), file.name);
+                    let oldpath = file.path;
+                    let newpath = path.join(path.resolve("storage"), file.name);
                     fs.rename(oldpath, newpath, function (err) {
                         if (err) throw err;
                     });
                 })
             }
             else {                                                          // if it's one file
-                var oldpath = files.fileToUpload.path;
-                var newpath = path.join(path.resolve("storage"), files.fileToUpload.name);
+                let oldpath = files.fileToUpload.path;
+                let newpath = path.join(path.resolve("storage"), files.fileToUpload.name);
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
                 });
