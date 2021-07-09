@@ -12,6 +12,8 @@ export default function init(){
 
     // selecting request prompts
     let requestPromptBG = document.querySelector(".requestPromptBG");
+    let yesButton = document.querySelector(".yes")
+    let noButton = document.querySelector(".no")
     let filesInformation = document.querySelector(".filesInformation");
 
     // selecting senderip span
@@ -94,4 +96,14 @@ export default function init(){
             // form.submit();
         });
     });
+
+    // adding event listeners for yes and no button
+    yesButton.addEventListener("click", () => {
+        
+    })
+
+    noButton.addEventListener("click", () => {
+        form.reset()
+        requestPromptBG.style.display = "none";
+    })
 }
