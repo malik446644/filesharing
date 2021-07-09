@@ -1,23 +1,34 @@
 var http = require('http');
 var formidable = require('formidable');
 let fs = require("fs");
-let customFunctions = require("./customFunctions")
-let mainWindow = require("./mainWindow")
-let path = require("path")
+let customFunctions = require("./customFunctions");
+let mainWindow = require("./mainWindow");
+let path = require("path");
+
+let sender = "";
+let reciever = "";
 
 //create a server object:
 http.createServer(function (req, res) {
-    console.log(req.socket.remoteAddress.replace("::ffff:", ""))
     if (req.url == '/canISendTheseFiles') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString(); // convert Buffer to string
         });
         req.on('end', () => {
-            mainWindow.webContents.send("request", body);
+            mainWindow.window.webContents.send("request", body);
         });
     }
+    else if (req.url == '/send'){
+        reqSender = req.socket.remoteAddress;
+        console.log("request sender ip is: " + reqSender);
+        if (reqSender != reciever) return res.end("you dont have permission to make this device send the files");
+        mainWindow.window.webContents.send("send", null);
+    }
     else if (req.url == '/uploadFile') {
+        reqSender = req.socket.remoteAddress;
+        console.log("request sender ip is: " + reqSender);
+        if (reqSender != sender) return res.end("you dont have permission to send files to this device");
         let form = new formidable.IncomingForm({
             multiples: true,
         });
@@ -40,12 +51,24 @@ http.createServer(function (req, res) {
                     if (err) throw err;
                 });
             }
+            sender = "";
+            reciever = "";
         });
         form.on('progress', function(bytesReceived, bytesExpected) {
             let progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2) == 100.00 ? 100 : customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
             console.log(progress);
         });
     }
-}).listen(8080);
+}).listen(8080, '0.0.0.0');
+
+mainWindow.ipcMain.on("sender", (e, data) => {
+    console.log(data)
+    sender = data
+    http.get(`http://${data}:8080/send`)
+})
+
+mainWindow.ipcMain.on("reciever", (e, data) => {
+    reciever = data;
+})
 
 console.log("webServer is listening on port 8080")

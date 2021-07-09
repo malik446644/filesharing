@@ -39,4 +39,4 @@ ipcMain.on("giveMeData", (e, data) => {
     });
 });
 
-module.exports = mainWindow
+module.exports = {"window": mainWindow, "ipcMain": ipcMain}

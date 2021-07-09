@@ -93,17 +93,23 @@ export default function init(){
             }).catch((err) => {
                 console.log(err)
             });
-            // form.submit();
+            ipcRenderer.send("reciever", input.dataset.deviceip)
         });
     });
 
+    ipcRenderer.on("send", (e, data) => {
+        form.submit();
+        form.reset()
+    })
+
     // adding event listeners for yes and no button
     yesButton.addEventListener("click", () => {
-        
+        requestPromptBG.style.display = "none";
+        ipcRenderer.send("sender", input.dataset.deviceip)
     })
 
     noButton.addEventListener("click", () => {
-        form.reset()
         requestPromptBG.style.display = "none";
+        form.reset()
     })
 }
