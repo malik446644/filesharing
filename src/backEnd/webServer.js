@@ -7,6 +7,7 @@ let path = require("path")
 
 //create a server object:
 http.createServer(function (req, res) {
+    console.log(req.socket.remoteAddress.replace("::ffff:", ""))
     if (req.url == '/canISendTheseFiles') {
         let body = '';
         req.on('data', chunk => {
