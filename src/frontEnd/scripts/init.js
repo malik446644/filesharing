@@ -107,6 +107,19 @@ export default function init(){
         form.reset();
         askProgressLoop()
     })
+
+    ipcRenderer.on("progress", (e, data) => {
+        loadingContainer.style.display = "block";
+        if(data == "100.00"){
+            console.log("finished with uploading the file");
+            loadingContainer.style.display = "none";
+            percentage.innerHTML = "0";
+            loadingBar.removeAttribute("style")
+        }else{
+            percentage.innerHTML = data;
+            loadingBar.setAttribute("style", `width: ${data}%;`)
+        }
+    })
     
     // adding event listeners for yes and no button
     yesButton.addEventListener("click", () => {
@@ -132,7 +145,6 @@ export default function init(){
                         loadingBar.removeAttribute("style")
                         clearInterval(ID);
                     }else{
-                        console.log(text);
                         percentage.innerHTML = text;
                         loadingBar.setAttribute("style", `width: ${text}%;`)
                     }

@@ -39,10 +39,13 @@ http.createServer(function (req, res) {
         form.maxFileSize = 50 * 1024 * 1024 * 1024 * 1024;                  // the maximum files size to transfer in 50 terabytes
         form.parse(req, function (err, fields, files) {
             if(err) return console.log(err);
+            let folderName = Date.now().toString();
+            let dirPath = path.join(__dirname, "../../storage");
+            fs.mkdirSync(path.join(dirPath, folderName));
             if(Array.isArray(files.fileToUpload)){                          // if it's mutiple files
                 files.fileToUpload.forEach((file) => {
                     let oldpath = file.path;
-                    let newpath = path.join(path.resolve("storage"), file.name);
+                    let newpath = path.join(dirPath, folderName, file.name);
                     fs.rename(oldpath, newpath, function (err) {
                         if (err) throw err;
                     });
@@ -50,7 +53,7 @@ http.createServer(function (req, res) {
             }
             else {                                                          // if it's one file
                 let oldpath = files.fileToUpload.path;
-                let newpath = path.join(path.resolve("storage"), files.fileToUpload.name);
+                let newpath = path.join(dirPath, folderName, files.fileToUpload.name);
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) throw err;
                 });
@@ -61,6 +64,7 @@ http.createServer(function (req, res) {
         });
         form.on('progress', function(bytesReceived, bytesExpected) {
             progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
+            mainWindow.window.webContents.send("progress", progress);
             console.log(progress);
         });
     }
