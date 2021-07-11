@@ -55,7 +55,7 @@ http.createServer(function (req, res) {
             reciever = "";
         });
         form.on('progress', function(bytesReceived, bytesExpected) {
-            let progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2) == 100.00 ? 100 : customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
+            let progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
             console.log(progress);
         });
     }

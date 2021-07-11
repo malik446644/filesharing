@@ -26,9 +26,9 @@ body{
 }
 .container{
     padding: 0 15px;
+    margin-bottom: 15px;
     border: 2px solid rgb(66, 66, 66);
     border-radius: 10px;
-    margin-bottom: 15px;
 }
 .device{
     display: flex;
@@ -106,4 +106,34 @@ body{
     background-color: black;
     color: white;
     border: 2px solid black;
+}
+
+.loadingContainer{
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+}
+
+.loadingBarParent{
+    position: relative;
+}
+
+.loadingBarBorders{
+    position: relative;
+    z-index: 10;
+    border: 2.5px solid black;
+    border-radius: 10px;
+    height: 10px;
+    margin-top: 5px;
+}
+
+.loadingBar{
+    position: absolute;
+    z-index: 1;
+    background-color: red;
+    border-radius: 10px;
+    height: 10px;
+    width: 50%;
+    top: 0px;
 }
