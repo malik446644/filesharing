@@ -1,3 +1,4 @@
 giving a name for every app that instals this app
 every file transaction should have a seperate folder
 only including devices that have a name and have installed the app
+making the app look nicer
