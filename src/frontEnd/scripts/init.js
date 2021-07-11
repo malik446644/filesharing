@@ -1,6 +1,7 @@
+const electron = require('electron');
+const {ipcRenderer} = electron;
+
 export default function init(){
-    const electron = require('electron');
-    const {ipcRenderer} = electron;
 
     // selecting loading container
     let loadingContainer = document.querySelector(".loadingContainer");
