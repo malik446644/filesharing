@@ -5,8 +5,9 @@ let customFunctions = require("./customFunctions");
 let mainWindow = require("./mainWindow");
 let path = require("path");
 
-let sender = "";
-let reciever = "";
+let sender = null;
+let reciever = null;
+let progress = null;
 
 //create a server object:
 http.createServer(function (req, res) {
@@ -18,6 +19,9 @@ http.createServer(function (req, res) {
         req.on('end', () => {
             mainWindow.window.webContents.send("request", body);
         });
+    }
+    else if (req.url == '/progress'){
+        res.end(progress == null ? "null" : progress);
     }
     else if (req.url == '/send'){
         reqSender = req.socket.remoteAddress;
@@ -51,11 +55,12 @@ http.createServer(function (req, res) {
                     if (err) throw err;
                 });
             }
-            sender = "";
-            reciever = "";
+            sender = null;
+            reciever = null;
+            progress = null
         });
         form.on('progress', function(bytesReceived, bytesExpected) {
-            let progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
+            progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
             console.log(progress);
         });
     }

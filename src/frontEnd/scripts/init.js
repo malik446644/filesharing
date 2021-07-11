@@ -2,6 +2,11 @@ export default function init(){
     const electron = require('electron');
     const {ipcRenderer} = electron;
 
+    // selecting loading container
+    let loadingContainer = document.querySelector(".loadingContainer");
+    let percentage = document.querySelector(".percentage");
+    let loadingBar = document.querySelector(".loadingBar");
+
     // selecting current device information html elements
     let currentDevicePrivateAddress = document.querySelector(".currentDevicePrivateAddress");
     let currentDevicePublicAddress = document.querySelector(".currentDevicePublicAddress");
@@ -99,17 +104,40 @@ export default function init(){
 
     ipcRenderer.on("send", (e, data) => {
         form.submit();
-        form.reset()
+        form.reset();
+        askProgressLoop()
     })
-
+    
     // adding event listeners for yes and no button
     yesButton.addEventListener("click", () => {
         requestPromptBG.style.display = "none";
-        ipcRenderer.send("sender", input.dataset.deviceip)
+        ipcRenderer.send("sender", input.dataset.deviceip);
     })
-
+    
     noButton.addEventListener("click", () => {
         requestPromptBG.style.display = "none";
-        form.reset()
+        form.reset();
     })
+    
+    // function to ask the server every 150 millisecond about the progress
+    function askProgressLoop(){
+        loadingContainer.style.display = "block";
+        let ID = setInterval(() => {
+            fetch(`http://${input.dataset.deviceip}:8080/progress`).then((r) => {
+                r.text().then((text) => {
+                    if(text == "null"){
+                        console.log("finished with uploading the file");
+                        loadingContainer.style.display = "none";
+                        percentage.innerHTML = "0";
+                        loadingBar.removeAttribute("style")
+                        clearInterval(ID);
+                    }else{
+                        console.log(text);
+                        percentage.innerHTML = text;
+                        loadingBar.setAttribute("style", `width: ${text}%;`)
+                    }
+                })
+            })
+        }, 150);
+    }
 }
