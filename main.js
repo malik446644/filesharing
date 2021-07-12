@@ -6,11 +6,6 @@ const publicIp = require('public-ip');
 
 const {app} = electron;
 
-// Enable live reload for Electron too 
-require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-});
-
 let mainWindow;
 
 app.on("ready", function(){

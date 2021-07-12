@@ -2,6 +2,8 @@ const electron = require("electron");
 const find = require('local-devices');
 const internalIp = require('internal-ip');
 const publicIp = require('public-ip');
+let fs = require("fs")
+let path = require("path")
 
 const {BrowserWindow, Menu, ipcMain} = electron;
 // importing menu template
@@ -38,5 +40,15 @@ ipcMain.on("giveMeData", (e, data) => {
         mainWindow.webContents.send("neccessaryData", neccessaryData);
     });
 });
+
+// checking if the user has set up the settings
+ipcMain.on("checkSettings", (e, data) => {
+    let settingsPath = path.join(__dirname, "../../settings.json");
+    let json = fs.readFileSync(settingsPath, 'utf8');
+    json = JSON.parse(json);
+    json.name = "malik";
+    json = JSON.stringify(json);
+    fs.writeFile(settingsPath, json, () => console.log("done writing to the file"));
+})
 
 module.exports = {"window": mainWindow, "ipcMain": ipcMain}
