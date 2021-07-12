@@ -1,5 +1,6 @@
 const electron = require('electron');
 const {ipcRenderer} = electron;
+let dialog = electron.remote.dialog
 
 export default function checkSettings() {
     return new Promise((resolve, reject) => {
@@ -13,7 +14,12 @@ export default function checkSettings() {
                 resolve();
             }else{
                 console.log("settings are not set");
-                settings.style.display = "flex"
+                settings.style.display = "flex";
+                let nameInput = document.querySelectorAll(".nameInput")[0];
+                let locationInput = document.querySelectorAll(".nameInput")[1];
+                document.querySelector(".confirm").addEventListener("click", () => {
+                    if(nameInput.value == "" || locationInput.value == "") dialog.showMessageBox(null, {message: "you need to fill all fields", title: "message"});
+                })
                 // taking information from the user and then resolve
             }
         });
