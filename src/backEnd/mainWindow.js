@@ -44,11 +44,10 @@ ipcMain.on("giveMeData", (e, data) => {
 // checking if the user has set up the settings
 ipcMain.on("checkSettings", (e, data) => {
     let settingsPath = path.join(__dirname, "../../settings.json");
-    let json = fs.readFileSync(settingsPath, 'utf8');
-    json = JSON.parse(json);
-    json.name = "malik";
-    json = JSON.stringify(json);
-    fs.writeFile(settingsPath, json, () => console.log("done writing to the file"));
+    let json = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+    json.name = "ahmed";
+    json.downloadPath = __dirname;
+    fs.writeFile(settingsPath, JSON.stringify(json), () => console.log("done writing to the file"));
 })
 
 module.exports = {"window": mainWindow, "ipcMain": ipcMain}
