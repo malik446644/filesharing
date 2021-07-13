@@ -1,9 +1,11 @@
+let fs = require("fs")
+let path = require("path")
+
 const electron = require("electron");
 const find = require('local-devices');
 const internalIp = require('internal-ip');
 const publicIp = require('public-ip');
-let fs = require("fs")
-let path = require("path")
+let Settings = require("./Settings");
 
 const {BrowserWindow, Menu, ipcMain} = electron;
 // importing menu template
@@ -11,6 +13,7 @@ let mainMenuTemplate = require("./menuTemplate");
 
 let app = require("../../main")
 let neccessaryData = {};
+let settingsPath = path.join(__dirname, "../../settings.json");
 
 mainWindow = new BrowserWindow({
     webPreferences: {
@@ -44,13 +47,13 @@ ipcMain.on("giveMeData", (e, data) => {
 
 // checking if the user has set up the settings
 ipcMain.on("checkSettings", (e, data) => {
-    let settingsPath = path.join(__dirname, "../../settings.json");
-    let json = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-    if(json.name == null || json.downloadPath == null){
-        mainWindow.webContents.send("isSettingSet", false)
-    }else{
-        mainWindow.webContents.send("isSettingSet", true)
-    }
+    mainWindow.webContents.send("isSettingSet", Settings.isSettingsSet())
+})
+
+// taking name and location from the frontend side
+ipcMain.on("userSettings", (e, data) => {
+    console.log(data);
+    Settings.changeSettings(data);
 })
 
 module.exports = {"window": mainWindow, "ipcMain": ipcMain}

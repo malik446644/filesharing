@@ -1,3 +1,3 @@
-making the app ask the user for very neccessary information befor making the app run
 only including devices that have a name and have installed the app
+refresh devices list every x amount of seconds
 making the app look nicer

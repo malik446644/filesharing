@@ -39,17 +39,18 @@
             </div>
         </div>
     </div>
-    <div class="requestPromptBG settings" style="display: none; background-color: white;">
+    <div class="requestPromptBG settings" style="display: none;">
         <div class="requestBody">
             <div class="label">choose your name</div>
-            <input placeholder="write your name here" class="nameInput" class="bottomMargin" type="text" name="" id="">
+            <input placeholder="device name" class="nameInput" class="bottomMargin" type="text">
             <div class="label">choose your downloads location</div>
-            <input placeholder="click here to choose location" class="nameInput" style="margin-bottom: 20px;" class="bottomMargin" type="text" name="" id="">
+            <input placeholder="downloads location" class="nameInput" style="margin-bottom: 20px;" class="bottomMargin" type="text" readonly>
             <div class="confirm" style="align-self: flex-end;">Next</div>
         </div>
     </div>
     <form class="theForm" action="null" method="post" enctype="multipart/form-data">
         <input type="file" name="fileToUpload" class="fileToUpload" data-deviceip="null" multiple>
+        <!-- <input type="file" name="fileToUpload" class="fileToUpload" data-deviceip="null" webkitdirectory directory multiple> -->
     </form>
 </body>
 </html>
