@@ -4,7 +4,7 @@ const electron = require("electron");
 const find = require('local-devices');
 const internalIp = require('internal-ip');
 const publicIp = require('public-ip');
-let Settings = require("./Settings");
+let settings = require("./Settings");
 
 const {BrowserWindow, Menu, ipcMain} = electron;
 // importing menu template
@@ -32,7 +32,7 @@ Menu.setApplicationMenu(mainMenu);
 
 ipcMain.on("giveMeData", (e, data) => {
     find().then(devices => {
-        devices.push({ name: '?', ip: '192.168.1.40', mac: '00:00:00:00:00:00' })
+        // devices.push({ name: '?', ip: '192.168.1.40', mac: '00:00:00:00:00:00' })
         neccessaryData.devices = devices;
         return internalIp.v4();
     }).then((ip) => {
@@ -40,6 +40,7 @@ ipcMain.on("giveMeData", (e, data) => {
         return publicIp.v4();
     }).then((ip) => {
         neccessaryData.publicIP = ip;
+        neccessaryData.name = settings.getSettings().name;
         let promises = [];
         for (let i = 0; i < neccessaryData.devices.length; i++) {
             promises.push(new Promise((resolve, reject) => {
@@ -80,12 +81,12 @@ ipcMain.on("giveMeData", (e, data) => {
 
 // checking if the user has set up the settings
 ipcMain.on("checkSettings", (e, data) => {
-    mainWindow.webContents.send("isSettingSet", Settings.isSettingsSet())
+    mainWindow.webContents.send("isSettingSet", settings.isSettingsSet())
 })
 
 // taking name and location from the frontend side
 ipcMain.on("userSettings", (e, data) => {
-    Settings.changeSettings(data);
+    settings.changeSettings(data);
 })
 
 module.exports = {"window": mainWindow, "ipcMain": ipcMain}

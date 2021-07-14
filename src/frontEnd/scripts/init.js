@@ -26,8 +26,8 @@ export default function init(){
     let senderip = document.querySelector(".senderip")
 
     // initilizing these DOM elements to use it gloabally
-    let form;
-    let input;
+    let form = document.querySelector(".theForm")
+    let input = document.querySelector(".fileToUpload")
     let sendImages;
 
     // send a signal to the electron app to give us (front end) the nesseccary data
@@ -49,7 +49,7 @@ export default function init(){
     ipcRenderer.on("neccessaryData", (e, data) => {
         currentDevicePrivateAddress.innerHTML = data.privateIP;
         currentDevicePrivateAddress.dataset.privateip = data.privateIP;
-        currentDevicePublicAddress.innerHTML = data.publicIP;
+        currentDevicePublicAddress.innerHTML = data.name;
         let devicesHTML = "";
         data.devices.forEach((device) => {
             devicesHTML += `<div class="device">
@@ -63,9 +63,7 @@ export default function init(){
         devicesContainer.innerHTML = devicesHTML;
         deviceInformation = document.querySelectorAll(".deviceInformation");
 
-        // selecting all the forms and the send images
-        form = document.querySelector(".theForm")
-        input = document.querySelector(".fileToUpload")
+        // selecting all the send images
         sendImages = document.querySelectorAll(".sendButton")
 
         // adding eventListeners for the send images
@@ -76,31 +74,31 @@ export default function init(){
                 input.click();
             });
         });
+    });
 
-        // adding eventListeners for the inputs
-        input.addEventListener("change", () => {
-            let files = Array.from(input.files);
-            let array = {sender: currentDevicePrivateAddress.dataset.privateip, files: []};
-            files.forEach((file) => {
-                array.files.push({
-                    name: file.name,
-                    size: file.size
-                });
+    // adding eventListeners for the inputs
+    input.addEventListener("change", () => {
+        let files = Array.from(input.files);
+        let array = {sender: currentDevicePrivateAddress.dataset.privateip, files: []};
+        files.forEach((file) => {
+            array.files.push({
+                name: file.name,
+                size: file.size
             });
-            fetch(`http://${input.dataset.deviceip}:8080/canISendTheseFiles`, {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(array)
-            }).then((r) => {
-                console.log(r.body)
-            }).catch((err) => {
-                console.log(err)
-            });
-            ipcRenderer.send("reciever", input.dataset.deviceip)
         });
+        fetch(`http://${input.dataset.deviceip}:8080/canISendTheseFiles`, {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(array)
+        }).then((r) => {
+            console.log(r.body)
+        }).catch((err) => {
+            console.log(err)
+        });
+        ipcRenderer.send("reciever", input.dataset.deviceip)
     });
 
     ipcRenderer.on("send", (e, data) => {

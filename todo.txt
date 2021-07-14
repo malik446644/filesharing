@@ -1,2 +1,3 @@
 refresh devices list every x amount of seconds
+change downloads path to the chosen path in the settings.json
 making the app look nicer

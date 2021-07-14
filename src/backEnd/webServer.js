@@ -45,7 +45,7 @@ http.createServer(function (req, res) {
         form.parse(req, function (err, fields, files) {
             if(err) return console.log(err);
             let folderName = Date.now().toString();
-            let dirPath = path.join(__dirname, "../../storage");
+            let dirPath = settings.getSettings().location
             fs.mkdirSync(path.join(dirPath, folderName));
             if(Array.isArray(files.fileToUpload)){                          // if it's mutiple files
                 files.fileToUpload.forEach((file) => {
