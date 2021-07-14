@@ -1,9 +1,11 @@
 var http = require('http');
-var formidable = require('formidable');
 let fs = require("fs");
+
+var formidable = require('formidable');
 let customFunctions = require("./customFunctions");
 let mainWindow = require("./mainWindow");
 let path = require("path");
+let settings = require("./Settings")
 
 let sender = null;
 let reciever = null;
@@ -19,6 +21,9 @@ http.createServer(function (req, res) {
         req.on('end', () => {
             mainWindow.window.webContents.send("request", body);
         });
+    }
+    else if (req.url == '/name'){
+        res.end(settings.getSettings().name);
     }
     else if (req.url == '/progress'){
         res.end(progress == null ? "null" : progress);

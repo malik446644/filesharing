@@ -1,5 +1,4 @@
-let fs = require("fs")
-let path = require("path")
+let http = require("http");
 
 const electron = require("electron");
 const find = require('local-devices');
@@ -11,9 +10,9 @@ const {BrowserWindow, Menu, ipcMain} = electron;
 // importing menu template
 let mainMenuTemplate = require("./menuTemplate");
 
-let app = require("../../main")
+let app = require("../../main");
+const { resolve } = require("path");
 let neccessaryData = {};
-let settingsPath = path.join(__dirname, "../../settings.json");
 
 mainWindow = new BrowserWindow({
     webPreferences: {
@@ -41,7 +40,37 @@ ipcMain.on("giveMeData", (e, data) => {
         return publicIp.v4();
     }).then((ip) => {
         neccessaryData.publicIP = ip;
-        mainWindow.webContents.send("neccessaryData", neccessaryData);
+        let promises = [];
+        for (let i = 0; i < neccessaryData.devices.length; i++) {
+            promises.push(new Promise((resolve, reject) => {
+                var options = {
+                    host: neccessaryData.devices[i].ip,
+                    path: '/name',
+                    port: 8080,
+                    method: "GET",
+                    timeout: 4000,
+                };
+                let request = http.request(options, (res) => {
+                    res.on("data", (chunk) => {
+                        console.log(chunk.toString());
+                        neccessaryData.devices[i].name = chunk.toString();
+                    });
+                    resolve();
+                });
+                request.on("error", (e) => {
+                    console.log("no name for " + neccessaryData.devices[i].ip);
+                    resolve();
+                });
+                request.on("timeout", () => {
+                    request.destroy();
+                });
+                request.end()
+            }))
+        }
+        Promise.all(promises).then(() => {
+            console.log(neccessaryData);
+            mainWindow.webContents.send("neccessaryData", neccessaryData);
+        })
     });
 });
 
@@ -52,7 +81,6 @@ ipcMain.on("checkSettings", (e, data) => {
 
 // taking name and location from the frontend side
 ipcMain.on("userSettings", (e, data) => {
-    console.log(data);
     Settings.changeSettings(data);
 })
 
