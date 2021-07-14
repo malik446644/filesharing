@@ -54,8 +54,8 @@ export default function init(){
         data.devices.forEach((device) => {
             devicesHTML += `<div class="device">
                 <div class="deviceInformation" data-ip="${device.ip}" data-mac="${device.mac}">
-                    <div class="containerinnerTitle"><span class="bold">private ip address: </span>${device.ip}</div>
-                    <div class="containerinnerTitle" ><span class="bold">private mac: </span>${device.mac}</div>
+                <div class="containerinnerTitle" ><span class="bold">device name: </span>${device.name}</div>
+                <div class="containerinnerTitle"><span class="bold">private ip address: </span>${device.ip}</div>
                 </div>
                 <img class="sendButton" style="cursor: pointer;" src="https://cdn.iconscout.com/icon/free/png-512/send-forward-arrow-right-direction-import-30559.png" height="35" width="35"></img>
             </div>`;

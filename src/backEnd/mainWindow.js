@@ -48,17 +48,15 @@ ipcMain.on("giveMeData", (e, data) => {
                     path: '/name',
                     port: 8080,
                     method: "GET",
-                    timeout: 4000,
+                    timeout: 2000,
                 };
                 let request = http.request(options, (res) => {
                     res.on("data", (chunk) => {
-                        console.log(chunk.toString());
                         neccessaryData.devices[i].name = chunk.toString();
                     });
                     resolve();
                 });
                 request.on("error", (e) => {
-                    console.log("no name for " + neccessaryData.devices[i].ip);
                     resolve();
                 });
                 request.on("timeout", () => {
@@ -68,7 +66,13 @@ ipcMain.on("giveMeData", (e, data) => {
             }))
         }
         Promise.all(promises).then(() => {
-            console.log(neccessaryData);
+            let arr = [];
+            for (let i = 0; i < neccessaryData.devices.length; i++) {
+                if (neccessaryData.devices[i].name != "?") {
+                    arr.push(neccessaryData.devices[i])
+                }
+            }
+            neccessaryData.devices = arr;
             mainWindow.webContents.send("neccessaryData", neccessaryData);
         })
     });
