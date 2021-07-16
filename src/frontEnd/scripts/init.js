@@ -50,23 +50,25 @@ export default function init(){
         currentDevicePrivateAddress.innerHTML = data.privateIP;
         currentDevicePrivateAddress.dataset.privateip = data.privateIP;
         currentDevicePublicAddress.innerHTML = data.name;
-        let devicesHTML = "";
-        data.devices.forEach((device) => {
-            devicesHTML += `<div class="device">
-                <div class="deviceInformation" data-ip="${device.ip}" data-mac="${device.mac}">
-                <div class="containerinnerTitle" ><span class="bold">device name: </span>${device.name}</div>
-                <div class="containerinnerTitle"><span class="bold">private ip address: </span>${device.ip}</div>
-                </div>
-                <img class="sendButton" style="cursor: pointer;" src="https://cdn.iconscout.com/icon/free/png-512/send-forward-arrow-right-direction-import-30559.png" height="35" width="35"></img>
-            </div>`;
-        })
-        devicesContainer.innerHTML = devicesHTML;
-        deviceInformation = document.querySelectorAll(".deviceInformation");
-
+        if(data.devices.length != 0){
+            data.devices.forEach((device) => {
+                devicesContainer.innerHTML += `<div class="device">
+                    <div class="deviceInformation" data-ip="${device.ip}" data-mac="${device.mac}">
+                    <div class="containerinnerTitle" ><span class="bold">device name: </span>${device.name}</div>
+                    <div class="containerinnerTitle"><span class="bold">private ip address: </span>${device.ip}</div>
+                    </div>
+                    <img class="sendButton" style="cursor: pointer;" src="https://cdn.iconscout.com/icon/free/png-512/send-forward-arrow-right-direction-import-30559.png" height="35" width="35"></img>
+                </div>`;
+            })
+        }else{
+            devicesContainer.innerHTML = "there is no devices in this local network"
+        }
+        
         // selecting all the send images
         sendImages = document.querySelectorAll(".sendButton")
-
+        
         // adding eventListeners for the send images
+        deviceInformation = document.querySelectorAll(".deviceInformation");
         sendImages.forEach((sendImage, i) => {
             sendImage.addEventListener("click", () => {
                 form.setAttribute("action", `http://${deviceInformation[i].dataset.ip}:8080/uploadFile`)
