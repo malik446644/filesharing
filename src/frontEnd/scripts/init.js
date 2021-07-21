@@ -28,11 +28,14 @@ export default function init(){
 
     // selecting senderip span
     let senderip = document.querySelector(".senderip")
+    let senderName = document.querySelector(".senderName")
 
     // initilizing these DOM elements to use it gloabally
     let form = document.querySelector(".theForm")
     let input = document.querySelector(".fileToUpload")
     let sendImages;
+
+    let currentDeviceName;
 
     // send a signal to the electron app to give us (front end) the nesseccary data
     // this is sending the data only when the front end is able to read data
@@ -84,6 +87,7 @@ export default function init(){
         })
         filesInformation.innerHTML = html;
         senderip.innerHTML = data.sender
+        senderName.innerHTML = data.senderName
         requestPromptBG.style.display = "flex";
     })
 
@@ -95,7 +99,7 @@ export default function init(){
 
     input.addEventListener("change", () => {
         let files = Array.from(input.files);
-        let array = {sender: currentDevicePrivateAddress.dataset.privateip, files: []};
+        let array = {sender: currentDevicePrivateAddress.dataset.privateip, senderName: currentDevicePublicAddress.innerHTML, files: []};
         files.forEach((file) => {
             array.files.push({
                 name: file.name,
@@ -141,7 +145,7 @@ export default function init(){
     // adding event listeners for yes and no button
     yesButton.addEventListener("click", () => {
         requestPromptBG.style.display = "none";
-        ipcRenderer.send("sender", input.dataset.deviceip);
+        ipcRenderer.send("sender", senderip.innerHTML);
     })
     
     noButton.addEventListener("click", () => {

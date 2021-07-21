@@ -76,7 +76,7 @@ http.createServer(function (req, res) {
 }).listen(8080, '0.0.0.0');
 
 mainWindow.ipcMain.on("sender", (e, data) => {
-    console.log(data)
+    console.log("from sender webserver: " + data)
     sender = data
     http.get(`http://${data}:8080/send`)
 })
