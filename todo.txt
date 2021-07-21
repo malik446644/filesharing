@@ -1,4 +1,2 @@
-refresh devices list every x amount of seconds
-telling the user to wait until the user responds or cancel
 handle all http errors
 making the app look nicer
