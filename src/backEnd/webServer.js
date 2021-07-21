@@ -85,4 +85,11 @@ mainWindow.ipcMain.on("reciever", (e, data) => {
     reciever = data;
 })
 
+mainWindow.ipcMain.on("resetData", (e, data) => {
+    console.log("done resentting data")
+    sender = null;
+    reciever = null;
+    progress = null
+})
+
 console.log("webServer is listening on port 8080")

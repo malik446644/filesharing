@@ -22,6 +22,10 @@ export default function init(){
     let noButton = document.querySelector(".no")
     let filesInformation = document.querySelector(".filesInformation");
 
+    // selecting wait for accept element
+    let waitForAccept = document.querySelector(".waitForAccept")
+    let waitForAcceptcancel = document.querySelector(".waitForAccept .cancel")
+
     // selecting senderip span
     let senderip = document.querySelector(".senderip")
 
@@ -33,24 +37,18 @@ export default function init(){
     // send a signal to the electron app to give us (front end) the nesseccary data
     // this is sending the data only when the front end is able to read data
     ipcRenderer.send("giveMeData", null);
-
+    setInterval(() => {
+        ipcRenderer.send("giveMeData", null);
+    }, 5000)
+    
     // events from electron
-    ipcRenderer.on("request", (e, data) => {
-        data = JSON.parse(data);
-        let html = "";
-        data.files.forEach((item) => {
-            html += `<div>name: ${item.name}, size: ${item.size}</div>`
-        })
-        filesInformation.innerHTML = html;
-        senderip.innerHTML = data.sender
-        requestPromptBG.style.display = "flex";
-    })
-
     ipcRenderer.on("neccessaryData", (e, data) => {
+        console.log("data has arrived")
         currentDevicePrivateAddress.innerHTML = data.privateIP;
         currentDevicePrivateAddress.dataset.privateip = data.privateIP;
         currentDevicePublicAddress.innerHTML = data.name;
         if(data.devices.length != 0){
+            devicesContainer.innerHTML = ""
             data.devices.forEach((device) => {
                 devicesContainer.innerHTML += `<div class="device">
                     <div class="deviceInformation" data-ip="${device.ip}" data-mac="${device.mac}">
@@ -78,7 +76,23 @@ export default function init(){
         });
     });
 
+    ipcRenderer.on("request", (e, data) => {
+        data = JSON.parse(data);
+        let html = "";
+        data.files.forEach((item) => {
+            html += `<div>name: ${item.name}, size: ${item.size}</div>`
+        })
+        filesInformation.innerHTML = html;
+        senderip.innerHTML = data.sender
+        requestPromptBG.style.display = "flex";
+    })
+
     // adding eventListeners for the inputs
+    waitForAcceptcancel.addEventListener("click", () => {
+        ipcRenderer.send("resetData", null)
+        waitForAccept.style.display = "none"
+    })
+
     input.addEventListener("change", () => {
         let files = Array.from(input.files);
         let array = {sender: currentDevicePrivateAddress.dataset.privateip, files: []};
@@ -100,10 +114,12 @@ export default function init(){
         }).catch((err) => {
             console.log(err)
         });
+        waitForAccept.style.display = "flex"
         ipcRenderer.send("reciever", input.dataset.deviceip)
     });
 
     ipcRenderer.on("send", (e, data) => {
+        waitForAccept.style.display = "none"
         form.submit();
         form.reset();
         askProgressLoop()
