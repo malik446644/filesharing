@@ -59,7 +59,7 @@ export default function init(){
                 </div>`;
             })
         }else{
-            devicesContainer.innerHTML = "there is no devices in this local network"
+            devicesContainer.innerHTML = "there are no devices in this local network"
         }
         
         // selecting all the send images
