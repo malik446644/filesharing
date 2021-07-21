@@ -32,7 +32,7 @@ Menu.setApplicationMenu(mainMenu);
 
 ipcMain.on("giveMeData", (e, data) => {
     find().then(devices => {
-        devices.push({ name: '?', ip: '192.168.1.40', mac: '00:00:00:00:00:00' })
+        // devices.push({ name: '?', ip: '192.168.1.40', mac: '00:00:00:00:00:00' })
         neccessaryData.devices = devices;
         return internalIp.v4();
     }).then((ip) => {
