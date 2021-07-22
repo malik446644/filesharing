@@ -1,2 +1,4 @@
+be able to cancel the file transformation
+add notification when new device appears
 handle all http errors
 making the app look nicer
