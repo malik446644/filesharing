@@ -1,4 +1,5 @@
 be able to cancel the file transformation
+change app window's logo
 add notification when new device appears
 handle all http errors
 making the app look nicer
