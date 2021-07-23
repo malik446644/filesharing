@@ -43,7 +43,7 @@ http.createServer(function (req, res) {
         });
         form.maxFileSize = 50 * 1024 * 1024 * 1024 * 1024;                  // the maximum files size to transfer in 50 terabytes
         form.parse(req, function (err, fields, files) {
-            if(err) return console.log(err);
+            if(err) return console.log("form parsing error: " + err);
             let folderName = Date.now().toString();
             let dirPath = settings.getSettings().location
             fs.mkdirSync(path.join(dirPath, folderName));
@@ -52,7 +52,7 @@ http.createServer(function (req, res) {
                     let oldpath = file.path;
                     let newpath = path.join(dirPath, folderName, file.name);
                     fs.rename(oldpath, newpath, function (err) {
-                        if (err) throw err;
+                        if (err)  console.log("file renaming error: " + err);
                     });
                 })
             }
@@ -60,7 +60,7 @@ http.createServer(function (req, res) {
                 let oldpath = files.fileToUpload.path;
                 let newpath = path.join(dirPath, folderName, files.fileToUpload.name);
                 fs.rename(oldpath, newpath, function (err) {
-                    if (err) throw err;
+                    if (err) console.log("file renaming error: " + err);
                 });
             }
             sender = null;

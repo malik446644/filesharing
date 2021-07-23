@@ -1,5 +1,6 @@
 be able to cancel the file transformation
+gray out the send image when there is a transaction operation
 change app window's logo
-add notification when new device appears
-handle all http errors
+add notification for: file transfer is done or is canceled or when it begins
 making the app look nicer
+file transfer history

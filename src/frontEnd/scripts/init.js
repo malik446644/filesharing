@@ -116,7 +116,7 @@ export default function init(){
         }).then((r) => {
             console.log(r.body)
         }).catch((err) => {
-            console.log(err)
+            console.log("fetch error: " + err)
         });
         waitForAccept.style.display = "flex"
         ipcRenderer.send("reciever", input.dataset.deviceip)
@@ -170,7 +170,9 @@ export default function init(){
                         loadingBar.setAttribute("style", `width: ${text}%;`)
                     }
                 })
-            })
+            }).catch((error) => {
+                console.log("fetch error: " + error)
+            });
         }, 150);
     }
 }
