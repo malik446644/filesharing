@@ -30,13 +30,13 @@ http.createServer(function (req, res) {
     }
     else if (req.url == '/send'){
         reqSender = req.socket.remoteAddress;
-        console.log("request sender ip is: " + reqSender);
+        // console.log("request sender ip is: " + reqSender);
         if (reqSender != reciever) return res.end("you dont have permission to make this device send the files");
         mainWindow.window.webContents.send("send", null);
     }
     else if (req.url == '/uploadFile') {
         reqSender = req.socket.remoteAddress;
-        console.log("request sender ip is: " + reqSender);
+        // console.log("request sender ip is: " + reqSender);
         if (reqSender != sender) return res.end("you dont have permission to send files to this device");
         let form = new formidable.IncomingForm({
             multiples: true,
@@ -70,13 +70,13 @@ http.createServer(function (req, res) {
         form.on('progress', function(bytesReceived, bytesExpected) {
             progress = customFunctions.map_range(bytesReceived, 0, bytesExpected, 0, 100).toFixed(2);
             mainWindow.window.webContents.send("progress", progress);
-            console.log(progress);
+            // console.log(progress);
         });
     }
 }).listen(8080, '0.0.0.0');
 
 mainWindow.ipcMain.on("sender", (e, data) => {
-    console.log("from sender webserver: " + data)
+    // console.log("from sender webserver: " + data)
     sender = data
     http.get(`http://${data}:8080/send`)
 })
@@ -86,7 +86,7 @@ mainWindow.ipcMain.on("reciever", (e, data) => {
 })
 
 mainWindow.ipcMain.on("resetData", (e, data) => {
-    console.log("done resentting data")
+    // console.log("done resentting data")
     sender = null;
     reciever = null;
     progress = null

@@ -46,7 +46,7 @@ export default function init(){
     
     // events from electron
     ipcRenderer.on("neccessaryData", (e, data) => {
-        console.log("data has arrived")
+        // console.log("data has arrived")
         currentDevicePrivateAddress.innerHTML = data.privateIP;
         currentDevicePrivateAddress.dataset.privateip = data.privateIP;
         currentDevicePublicAddress.innerHTML = data.name;
@@ -114,7 +114,7 @@ export default function init(){
             },
             body: JSON.stringify(array)
         }).then((r) => {
-            console.log(r.body)
+            // console.log(r.body)
         }).catch((err) => {
             console.log("fetch error: " + err)
         });
@@ -132,7 +132,7 @@ export default function init(){
     ipcRenderer.on("progress", (e, data) => {
         loadingContainer.style.display = "block";
         if(data == "100.00"){
-            console.log("finished with uploading the file");
+            // console.log("finished with uploading the file");
             loadingContainer.style.display = "none";
             percentage.innerHTML = "0";
             loadingBar.removeAttribute("style")
@@ -160,7 +160,7 @@ export default function init(){
             fetch(`http://${input.dataset.deviceip}:8080/progress`).then((r) => {
                 r.text().then((text) => {
                     if(text == "null"){
-                        console.log("finished with uploading the file");
+                        // console.log("finished with uploading the file");
                         loadingContainer.style.display = "none";
                         percentage.innerHTML = "0";
                         loadingBar.removeAttribute("style")
