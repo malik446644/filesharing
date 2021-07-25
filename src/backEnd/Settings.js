@@ -3,27 +3,29 @@ let path = require("path");
 
 let settingsPath = path.join(__dirname, "../../settings.json");
 
-class Settings {
-    constructor() {
-        let obj = this.getSettings();
-        this.name = obj.name;
-        this.location = obj.location;
+Settings = {
+    name: "",
+    location: "",
+    init: () => {
+        let obj = Settings.getSettings();
+        Settings.name = obj.name;
+        Settings.location = obj.location;
         console.log("finished constructing the object")
-    }
-    getSettings(){
+    },
+    getSettings: () => {
         let obj = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
         return obj
-    }
-    changeSettings(obj){
+    },
+    changeSettings: (obj) => {
         fs.writeFileSync(settingsPath, JSON.stringify({
             "name": obj.name,
             "location": obj.location
         }));
-        this.name = obj.name;
-        this.location = obj.location;
+        Settings.name = obj.name;
+        Settings.location = obj.location;
         console.log("done writing to the file from the setting class");
-    }
-    isSettingsSet() {
+    },
+    isSettingsSet: () => {
         let obj = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
         if(obj.name == null || obj.location == null){
             return false;
@@ -33,4 +35,4 @@ class Settings {
     }
 }
 
-module.exports = new Settings();
+module.exports = Settings;

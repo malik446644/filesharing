@@ -9,6 +9,8 @@ let settings = require("./Settings");
 const {BrowserWindow, Menu, ipcMain} = electron;
 // importing menu template
 let mainMenuTemplate = require("./menuTemplate");
+// initializing the Settings object
+settings.init();
 
 let app = require("../../main");
 const { resolve } = require("path");
