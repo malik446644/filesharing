@@ -10,7 +10,7 @@
   "author": "Malik Najjar",
   "license": "ISC",
   "dependencies": {
-    "electron": "^13.1.4",
+    "electron": "^13.6.6",
     "formidable": "^1.2.2",
     "internal-ip": "^6.2.0",
     "local-devices": "^3.1.0",
